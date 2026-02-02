@@ -1,22 +1,15 @@
-type UserActionsPanelProps = {
-	selectedUserId: string | null;
-	isSuspended: boolean;
-	isMutating: boolean;
-	onResetQuota: () => void;
-	onToggleSuspend: (isSuspended: boolean) => void;
-	onAddExtra: (amount: number) => void;
-};
-
 import { useState } from "react";
+import { useDashboardContext } from "../context/DashboardContext";
 
-export const UserActionsPanel = ({
-	selectedUserId,
-	isSuspended,
-	isMutating,
-	onResetQuota,
-	onToggleSuspend,
-	onAddExtra,
-}: UserActionsPanelProps) => {
+export const UserActionsPanel = () => {
+	const {
+		selectedUserId,
+		selectedUserData,
+		isMutating,
+		resetQuota,
+		toggleSuspendUser,
+		addExtraRequests,
+	} = useDashboardContext();
 	const [addExtraAmount, setAddExtraAmount] = useState(5);
 
 	return (
@@ -27,7 +20,7 @@ export const UserActionsPanel = ({
 			<div className="space-y-3">
 				<button
 					type="button"
-					onClick={onResetQuota}
+					onClick={resetQuota}
 					disabled={!selectedUserId || isMutating}
 					className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:border-emerald-500/60 hover:text-emerald-200 disabled:cursor-not-allowed disabled:opacity-60"
 				>
@@ -37,8 +30,8 @@ export const UserActionsPanel = ({
 					<span>Suspension</span>
 					<input
 						type="checkbox"
-						checked={isSuspended}
-						onChange={(event) => onToggleSuspend(event.target.checked)}
+						checked={selectedUserData?.registryData.isSuspended ?? false}
+						onChange={(event) => toggleSuspendUser(event.target.checked)}
 						disabled={!selectedUserId || isMutating}
 						className="h-5 w-5 accent-emerald-500"
 					/>
@@ -54,7 +47,7 @@ export const UserActionsPanel = ({
 					/>
 					<button
 						type="button"
-						onClick={() => onAddExtra(addExtraAmount)}
+						onClick={() => addExtraRequests(addExtraAmount)}
 						disabled={!selectedUserId || isMutating}
 						className="flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:border-amber-500/60 hover:text-amber-200 disabled:cursor-not-allowed disabled:opacity-60"
 					>

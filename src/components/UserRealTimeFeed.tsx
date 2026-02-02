@@ -1,34 +1,29 @@
-import type { RateUpdateDto } from "../shared/types";
 import { StatusBadge } from "./StatusBadge";
+import { useTimer } from "../hooks/useTimer";
+import { useDashboardContext } from "../context/DashboardContext";
 import { formatRelativeTime } from "../shared/utilities";
 
-type UserRealTimeFeedProps = {
-	selectedUserId: string | null;
-	isLoading: boolean;
-	history: RateUpdateDto[];
-	now: number;
-};
-
-export const UserRealTimeFeed = ({
-	selectedUserId,
-	isLoading,
-	history,
-	now,
-}: UserRealTimeFeedProps) => {
+export const UserRealTimeFeed = () => {
+	const now = useTimer();
+	const { selectedUserId, selectedUserData, isUserLoading } =
+		useDashboardContext();
+	const history = selectedUserData?.requestsHistory ?? [];
 	return (
 		<div className="space-y-4">
 			<h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
 				Real-Time Feed
 			</h3>
 			<div className="max-h-72 space-y-3 overflow-y-auto pr-2 scrollbar-thin">
-				{selectedUserId && isLoading ? (
+				{selectedUserId && isUserLoading ? (
 					<div className="space-y-2">
 						<div className="h-10 w-full animate-pulse rounded-xl bg-slate-900" />
 						<div className="h-10 w-full animate-pulse rounded-xl bg-slate-900" />
 						<div className="h-10 w-full animate-pulse rounded-xl bg-slate-900" />
 					</div>
 				) : selectedUserId && history.length > 0 ? (
-					history.map((entry) => (
+					[...history]
+						.sort((a, b) => b.lastRequestTimestamp - a.lastRequestTimestamp)
+						.map((entry) => (
 						<div
 							key={`${entry.userId}-${entry.lastRequestTimestamp}`}
 							className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/50 px-4 py-3"

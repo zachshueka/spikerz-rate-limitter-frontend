@@ -1,12 +1,9 @@
+import { useDashboardContext } from "../context/DashboardContext";
+
 export type ToastMessage = {
 	id: string;
 	type: "success" | "error";
 	message: string;
-};
-
-type ToastProps = {
-	toasts: ToastMessage[];
-	onDismiss: (id: string) => void;
 };
 
 const TOAST_STYLES: Record<ToastMessage["type"], string> = {
@@ -14,7 +11,9 @@ const TOAST_STYLES: Record<ToastMessage["type"], string> = {
 	error: "border-rose-500/30 bg-rose-500/10 text-rose-100",
 };
 
-export const Toasts = ({ toasts, onDismiss }: ToastProps) => {
+export const Toasts = () => {
+	const { toasts, dismissToast } = useDashboardContext();
+
 	return (
 		<div className="fixed right-6 top-6 z-50 flex w-80 flex-col gap-3">
 			{toasts.map((toast) => (
@@ -26,7 +25,7 @@ export const Toasts = ({ toasts, onDismiss }: ToastProps) => {
 						<p>{toast.message}</p>
 						<button
 							type="button"
-							onClick={() => onDismiss(toast.id)}
+							onClick={() => dismissToast(toast.id)}
 							className="text-xs text-slate-300 transition hover:text-white"
 						>
 							Dismiss

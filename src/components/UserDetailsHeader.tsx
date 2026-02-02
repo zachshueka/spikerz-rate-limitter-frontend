@@ -1,8 +1,7 @@
-type UserDetailsHeaderProps = {
-	selectedUserId: string | null;
-};
+import { useDashboardContext } from "../context/DashboardContext";
 
-export const UserDetailsHeader = ({ selectedUserId }: UserDetailsHeaderProps) => {
+export const UserDetailsHeader = () => {
+	const { selectedUserId } = useDashboardContext();
 	return (
 		<header className="space-y-2">
 			<p className="text-xs uppercase tracking-[0.3em] text-slate-500">

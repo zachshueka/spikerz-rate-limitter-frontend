@@ -1,16 +1,12 @@
-type GlobalControlsProps = {
-	adjustLimitAmount: number;
-	onAdjustLimitAmountChange: (value: number) => void;
-	onAdjustLimitAll: () => void;
-	isMutating: boolean;
-};
+import { useDashboardContext } from "../context/DashboardContext";
 
-export const GlobalControls = ({
-	adjustLimitAmount,
-	onAdjustLimitAmountChange,
-	onAdjustLimitAll,
-	isMutating,
-}: GlobalControlsProps) => {
+export const GlobalControls = () => {
+	const {
+		adjustLimitAmount,
+		setAdjustLimitAmount,
+		applyAdjustLimit,
+		isMutating,
+	} = useDashboardContext();
 	return (
 		<section className="rounded-2xl border border-slate-800 bg-slate-950/60 p-6 shadow-lg">
 			<h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
@@ -25,14 +21,14 @@ export const GlobalControls = ({
 					min={1}
 					value={adjustLimitAmount}
 					onChange={(event) =>
-						onAdjustLimitAmountChange(Number(event.target.value))
+						setAdjustLimitAmount(Number(event.target.value))
 					}
 					disabled={isMutating}
 					className="w-24 rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100"
 				/>
 				<button
 					type="button"
-					onClick={onAdjustLimitAll}
+					onClick={applyAdjustLimit}
 					disabled={isMutating}
 					className="flex-1 rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm font-semibold text-slate-100 transition hover:border-slate-500 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
 				>
