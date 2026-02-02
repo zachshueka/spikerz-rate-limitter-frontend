@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { io } from "socket.io-client";
-import type { LimitExceededDto, RateUpdateDto } from "../types/rate-limit";
+import type { LimitExceededDto, RateUpdateDto } from "../shared/types";
 
 type RateLimitSocketHandlers = {
 	onRateUpdate: (payload: RateUpdateDto) => void;
 	onLimitExceeded: (payload: LimitExceededDto) => void;
 };
+
+const RATE_UPDATE_EVENT = "rate:update";
+const LIMIT_EXCEEDED_EVENT = "rate:limit_exceeded";
 
 export const useRateLimitSocket = ({
 	onRateUpdate,
@@ -22,12 +25,12 @@ export const useRateLimitSocket = ({
 			autoConnect: true,
 		});
 
-		socket.on("rate:update", onRateUpdate);
-		socket.on("rate:limit_exceeded", onLimitExceeded);
+		socket.on(RATE_UPDATE_EVENT, onRateUpdate);
+		socket.on(LIMIT_EXCEEDED_EVENT, onLimitExceeded);
 
 		return () => {
-			socket.off("rate:update", onRateUpdate);
-			socket.off("rate:limit_exceeded", onLimitExceeded);
+			socket.off(RATE_UPDATE_EVENT, onRateUpdate);
+			socket.off(LIMIT_EXCEEDED_EVENT, onLimitExceeded);
 			socket.disconnect();
 		};
 	}, [onRateUpdate, onLimitExceeded]);

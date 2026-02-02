@@ -1,4 +1,4 @@
-import type { RateLimitStatus } from "../types/rate-limit";
+import type { RateLimitStatus } from "../shared/types";
 
 const STATUS_STYLES: Record<RateLimitStatus, string> = {
 	OK: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",

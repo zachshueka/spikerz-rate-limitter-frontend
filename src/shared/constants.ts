@@ -1,0 +1,7 @@
+export const DEFAULT_REQUESTS_LIMIT_ADJUSTMENT = 100;
+
+export const WARNING_THRESHOLD_RATIO = 0.1;
+
+export const PULSE_DURATION_MS = 1200;
+export const TOAST_DURATION_MS = 4000;
+export const CRITICAL_DURATION_MS = 1600;
